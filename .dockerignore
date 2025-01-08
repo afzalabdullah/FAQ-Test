@@ -1,7 +1,0 @@
-node_modules
-npm-debug.log
-.git
-.gitignore
-Frontend/node_modules
-FAQ/node_modules
-.env

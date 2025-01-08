@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 // MongoDB Connection
-const mongoUri = process.env.Mongo_Con;
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/mydb'; // Default to local MongoDB if no URI is provided
 mongoose
     .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))
@@ -23,13 +23,15 @@ mongoose
 // Routes
 app.use('/api/faqs', faqRoutes);
 
-// Serve React Frontend
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve React Frontend (Production mode)
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'build')));
 
-// Handle React routing, return all requests to React app
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+    // Handle React routing, return all requests to React app
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    });
+}
 
 // Server Start
 const PORT = process.env.PORT || 3000;

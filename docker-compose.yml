@@ -1,9 +1,26 @@
-version: '3'
+version: "3.8"
 services:
-  faq-app:
-    build: .
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     ports:
       - "3000:3000"
-    env_file:
-      - FAQ/.env
-    restart: always
+    environment:
+      - MONGODB_URI=mongodb+srv://majeedmehmood7:Majeed1234567@ecomm.hn7ho.mongodb.net/?retryWrites=true&w=majority&appName=EComm
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
