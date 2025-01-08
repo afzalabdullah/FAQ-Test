@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: frontend/Dockerfile
     ports:
-      - "8989:80" # Map container's port 80 to localhost:8989
+      - "80:80" # Map container's port 80 to localhost:8989
     networks:
       - app-network
 
